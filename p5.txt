@@ -279,7 +279,9 @@ Captura una sesión SIP de una conversación con el número SIP sip:500@ekigan.n
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
-19. Filtra por los paquetes SIP de la captura y guarda únicamente los paquetes SIP como sip.libpcap. Abre el fichero guardado para cerciorarte de que lo has hecho bien. Deberás guardarlo en un archivo de nombre p5.libpcap y añadirlo al repositorio.
+19. Filtra por los paquetes SIP de la captura y guarda ´unicamente los paquetes SIP como p5.pcapng. Abre el fichero guardado para cerciorarte de que lo has hecho bien. Deber´as guardarlo en un archivo de nombre p5.pcapng y a˜nadirlo al repositorio.
+
+Hecho.
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
