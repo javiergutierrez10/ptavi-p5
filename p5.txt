@@ -22,7 +22,8 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
     
  ** ¿Qué IP tiene la máquina donde se ha efectuado la captura? ¿Se trata de una IP pública o de una IP privada? ¿Por qué lo sabes?
 
-    
+    192.168.1.34
+    Privada, lo podemos ver en wikipedia.
 
 3. Antes de analizar las tramas, mira las estadísticas generales que aparecen en el menú de Statistics. En el apartado de jerarquía de protocolos (Protocol Hierarchy) se puede ver el porcentaje del tráfico correspondiente al protocolo TCP y UDP.
  ** ¿Cuál de los dos es mayor? ¿Es esto consistente con una aplicación que transmite en tiempo real?
@@ -121,55 +122,123 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 10. Una vez registrados, podemos efectuar una llamada. Vamos a probar con el servicio de eco de Ekiga que nos permite comprobar si nos hemos conectado correctamente. El servicio de eco tiene la dirección sip:500@ekiga.net. Veamos el INVITE de cerca.
  ** ¿Puede verse el nombre del que efectúa la llamada, así como su dirección SIP?
+ 
+    Sí, Gregorio Robles con sip: grex@ekiga.net
+    
  ** ¿Qué es lo que contiene el cuerpo de la trama? ¿En qué formato/protocolo está?
+ 
+    La descripción de medios en SDP.
+ 
  ** ¿Tiene éxito el primer intento? ¿Cómo lo sabes?
+ 
+    No, requiere autenticarse. Por el 407 Proxy Authentication Required
+
  ** ¿En qué se diferencia el segundo INVITE más abajo del primero? ¿A qué crees que se debe esto?
 
+    Tiene más lenght, debido a que ahora está enviando el nonce.
 
 11. Una vez conectado, estudia el intercambio de tramas.
  ** ¿Qué protocolo(s) se utiliza(n)? ¿Para qué sirven estos protocolos?
+ 
+    RTP: Responsable de la transmisión de datos
+    H.261: Estándar de compresión
+ 
  ** ¿Cuál es el tamaño de paquete de los mismos?
+ 
+    214 los de RTP, y unos 1000 H.261
+ 
  ** ¿Se utilizan bits de padding?
+ 
+    No
+
  ** ¿Cuál es la periodicidad de los paquetes que se envían?
+ 
+    Time = 160 20 ms
+ 
  ** ¿Cuántos bits/segundo estamos enviando?
 
-
+    10 paquetes de 160 bytes
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
 12. Vamos a ver más a fondo el intercambio RTP. En Telephony hay una opción RTP. Empecemos mirando los flujos RTP.
  ** ¿Cuántos flujos hay? ¿por qué?
+ 
+    2, uno para audio 5010 y otro para vídeo 5014
+ 
  ** ¿Cuántos paquetes se pierden?
+ 
+    0
+ 
  ** ¿Cuál es el valor máximo del delta? ¿Y qué es lo que significa el valor de delta?
+ 
+    1290.479 ms y 1290.444 ms
+    
+ 
  ** ¿Cuáles son los valores de jitter (medio y máximo)? ¿Qué quiere decir eso? ¿Estamos ante una conversación de calidad?
 
+    Los máximos: 183.096 y 119.635
+    Los medios: 153.240 y 42.500
 
 13. Elige un paquete RTP de audio. Analiza el flujo de audio en Telephony -> RTP -> Stream Analysis.
  ** ¿Cuánto valen el delta y el jitter para el primer paquete que ha llegado?
+
+    0 y 0
+
  ** ¿Podemos saber si éste es el primer paquete que nos han enviado?
+ 
+    Sí, por el número de secuencia.
+
  ** Los valores de jitter son menores de 10ms hasta un paquete dado. ¿Cuál?
+ 
+    Hasta el 247.
+ 
  ** ¿A qué se debe el cambio tan brusco del jitter?
+ 
+    A que tarda en llegarnos un paquete.
+ 
  ** ¿Es comparable este cambio con el tiempo desde la recepción del paquete anterior? ¿Por qué?
+ 
+    No, el delta es mayor que el jitter
+ 
  ** ¿Cuál es la dependencia entre el tiempo transcurrido desde el paquete anterior y el valor de jitter?
 
+    Que lo que tarda en capturar ese paquete es lo que sube el jitter.
 
 14. En Telephony selecciona el menú VoIP calls. Verás que se lista la llamada de voz IP capturada en una ventana emergente. Selecciona esa llamada y pulsa el botón Graph.
  ** ¿Cuánto dura la conversación?
+ 
+    38,5 - 17,5 = 21s
+
  ** ¿Cuáles son sus SSRC? ¿Por qué hay varios SSRCs? ¿Hay CSRCs?
 
+    ------------------
 
 15. Identifica la trama donde se finaliza la conversación.
  ** ¿Qué método SIP se utiliza?
+ 
+    BYE
+ 
  ** ¿En qué trama(s)?
+ 
+    924, 925, 927 y 933
+
  ** ¿Por qué crees que se envía varias veces?
 
+    Por un problema con los puertos.
 
 16. Finalmente, se cierra la aplicación de VozIP.
  ** ¿Por qué aparece una instrucción SIP del tipo REGISTER?
+ 
+    Porque se está dando de baja.
+
  ** ¿En qué trama sucede esto?
+ 
+    952
+ 
  ** ¿En qué se diferencia con la instrucción que se utilizó con anterioridad (al principio de la sesión)?
 
-
+    El expires es igual a 0 para darse de baja.
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
@@ -178,7 +247,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
 
 Captura de una sesión SIP
 
-Captura una sesión SIP de una conversación con el número SIP sip:9999@qxip.net. Tendrás que dar de alta una cuenta en www.ekiga.net con el navegador. Recuerda también que has de comenzar a capturar tramas antes de arrancar Ekiga para ver todo el proceso en el que participa SIP. Para realizar los siguientes ejercicios, deberás crearte una cuenta en ekiga.net y darte de alta la lanzar la aplicación.
+Captura una sesión SIP de una conversación con el número SIP sip:500@ekigan.net. Tendrás que dar de alta una cuenta en www.ekiga.net con el navegador. Recuerda también que has de comenzar a capturar tramas antes de arrancar Ekiga para ver todo el proceso en el que participa SIP. Para realizar los siguientes ejercicios, deberás crearte una cuenta en ekiga.net y darte de alta la lanzar la aplicación.
 
 17. Observa las diferencias en el inicio de la conversación entre el entorno del laboratorio y el del ejercicio anterior:
  ** ¿Es necesario el uso de DNS y STUN? ¿Por qué?
