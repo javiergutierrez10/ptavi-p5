@@ -168,7 +168,7 @@ Se ha capturado una sesión SIP (archivo sip.cap.gz), que se puede abrir con Wir
  
  ** ¿Cuántos paquetes se pierden?
  
-    0
+    0 %
  
  ** ¿Cuál es el valor máximo del delta? ¿Y qué es lo que significa el valor de delta?
  
