@@ -251,17 +251,31 @@ Captura una sesión SIP de una conversación con el número SIP sip:500@ekigan.n
 
 17. Observa las diferencias en el inicio de la conversación entre el entorno del laboratorio y el del ejercicio anterior:
  ** ¿Es necesario el uso de DNS y STUN? ¿Por qué?
+ 
+  Sí para contactar con el servidor y STUN por estar detrás de un NAT
+ 
  ** ¿Son diferentes el registro y la descripción de la sesión?
 
+ Sí, usan diferente protocolo.
 
 18. Identifica las diferencias existentes entre esta conversación y la conversación anterior:
  ** ¿Cuántos flujos tenemos?
+ 
+  2
+ 
  ** ¿Cuál es su periodicidad?
+ 
+ T = 160 = 20 ms
+ 
  ** ¿Cuánto es el valor máximo del delta y los valores medios y máximo del jitter?
+ 
+ Max delta = 606.588 Max Jitter = 5.816
+ 
  ** ¿Podrías reproducir la conversación desde Wireshark? ¿Cómo? Comprueba que poniendo un valor demasiado pequeño para el buffer de jitter, la conversación puede no tener la calidad necesaria.
- ** ¿Sabrías decir qué tipo de servicio ofrece sip:9999@qxip.net?
-
-
+ 
+ Sí, desde play streams dandole a play
+ 
+ ** ¿Sabrías decir qué tipo de servicio ofrece sip:500@ekiga.net?
 
 [Al terminar el ejercicio es recomendable hacer commit de los ficheros modificados]
 
